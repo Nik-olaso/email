@@ -4,10 +4,6 @@ from email.mime.text import MIMEText
 import smtplib
 import os
 from dotenv import load_dotenv
-load_dotenv()
-
-TOKEN = os.getenv("TOKEN")
-server = smtplib.SMTP_SSL('smtp.yandex.ru:465')
 
 
 def create_message():
@@ -26,18 +22,21 @@ def create_message():
     return msg, text
 
 
-def send_messsage():
+def send_message(server, PASSWORD):
     msg, text = create_message()
     msg.attach(MIMEText(text, "plain", "utf-8"))
 
-    server.login(msg["From"], TOKEN)
+    server.login(msg["From"], PASSWORD)
 
     server.sendmail(msg["From"], msg["To"], msg.as_string())
     server.quit()
 
 
 def main():
-    send_messsage()
+    load_dotenv()
+    PASSWORD = os.getenv("PASSWORD")
+    server = smtplib.SMTP_SSL('smtp.yandex.ru:465')
+    send_message(server, PASSWORD)
 
 
 if __name__ == '__main__':
