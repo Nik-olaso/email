@@ -22,11 +22,11 @@ def create_message():
     return msg, text
 
 
-def send_message(server, PASSWORD):
+def send_message(server, EMAIL_PASSWORD):
     msg, text = create_message()
     msg.attach(MIMEText(text, "plain", "utf-8"))
 
-    server.login(msg["From"], PASSWORD)
+    server.login(msg["From"], EMAIL_PASSWORD)
 
     server.sendmail(msg["From"], msg["To"], msg.as_string())
     server.quit()
@@ -34,9 +34,9 @@ def send_message(server, PASSWORD):
 
 def main():
     load_dotenv()
-    PASSWORD = os.getenv("PASSWORD")
+    EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
     server = smtplib.SMTP_SSL('smtp.yandex.ru:465')
-    send_message(server, PASSWORD)
+    send_message(server, EMAIL_PASSWORD)
 
 
 if __name__ == '__main__':
